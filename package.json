@@ -20,9 +20,11 @@
   "homepage": "https://github.com/isjulianj/threejsjourney#readme",
   "dependencies": {
     "react": "^19.1.0",
-    "three": "^0.176.0"
+    "three": "^0.176.0",
+    "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vite-plugin-restart": "^0.4.2"
   }
 }
