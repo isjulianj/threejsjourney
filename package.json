@@ -1,0 +1,27 @@
+{
+  "name": "threejsjourney",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isjulianj/threejsjourney.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isjulianj/threejsjourney/issues"
+  },
+  "homepage": "https://github.com/isjulianj/threejsjourney#readme",
+  "dependencies": {
+    "react": "^19.1.0",
+    "three": "^0.176.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
