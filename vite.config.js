@@ -3,7 +3,8 @@ import restart from 'vite-plugin-restart'
 export default {
     // config options
     root: './src',
-    publicDirectory: '../public/',
+    publicDir: '../static/',
+    base: './',
     server: {
         port: 6969,
         open: true,
@@ -21,6 +22,6 @@ export default {
         sourcemap: true,
     },
     plugins: [
-        restart({restart: ['../public/**', ]})
+        restart({restart: ['../static/**', ]})
     ]
 }
