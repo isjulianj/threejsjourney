@@ -14,7 +14,7 @@ const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshBasicMaterial({ color: 0xffff00, opacity: 0.5 })
 const mesh = new THREE.Mesh(geometry, material)
 
-mesh.position.set(0.9, -0.6, 0.5)
+mesh.position.set(0.7, -0.6, 0.5)
 
 scene.add(mesh)
 scene.add(axisHelper)
@@ -22,8 +22,9 @@ scene.add(axisHelper)
 mesh.scale.set(2, 0.5, 1)
 
 // rotation
-mesh.rotation.y = Math.PI * 0.25
+mesh.rotation.reorder('YXZ')
 mesh.rotation.x = Math.PI * 0.25
+mesh.rotation.y = Math.PI * 0.25
 
 const sizes = {
     width: 800,
@@ -41,6 +42,8 @@ const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, sizes.wi
 camera.position.z = 6
 
 scene.add(camera)
+
+camera.lookAt(mesh.position)
 const renderer = new THREE.WebGLRenderer({
     canvas
 })
