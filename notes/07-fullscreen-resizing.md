@@ -33,3 +33,15 @@ We had to apply some styles to the css to eliminate standard browser padding and
         top: 0;
         left: 0;
     }
+</code>
+
+## pixel ratio
+
+Modern devices like retina displays can increase pixel ratios, so it's best to set the pixel ratio in the renderer
+   ```
+   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+   ```
+It's nice to add this to the resize event, as use might move from one screen to another each screen might have a different ratio. 
+
+## Handling fullscreen
+
