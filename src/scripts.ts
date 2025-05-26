@@ -3,65 +3,27 @@ import * as THREE from "three"
 // Canvas
 const canvas: HTMLCanvasElement = document.querySelector("#canvas-webgl")
 
-const axisHelper = new THREE.AxesHelper(3)
+const helper = new THREE.AxesHelper();
 
-// Scene
-const scene = new THREE.Scene()
+const scene = new THREE.Scene();
 
-/**
- * Objects
- */
-const group = new THREE.Group();
-scene.add(group)
-
-const cube1 = new THREE.Mesh(new THREE.BoxGeometry(1,1,1),
-    new THREE.MeshBasicMaterial({color: 0xffffff}));
-
-group.position.set(0,2,0);
-
-group.add(cube1)
-
-const cube2 = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial({color: 0xffff00}));
-cube2.position.x = -2
-group.add(cube2)
-
-const cube3 = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial({color: 0xff0000}));
-cube3.position.x = 2
-group.add(cube3)
-
-scene.add(axisHelper)
-
-// mesh.scale.set(2, 0.5, 1)
-
-// rotation
-// mesh.rotation.reorder('YXZ')
-// mesh.rotation.x = Math.PI * 0.25
-// mesh.rotation.y = Math.PI * 0.25
+const geom = new THREE.BoxGeometry(1,1,1)
+const material = new THREE.MeshBasicMaterial({color: 0x0000ff})
+const cube = new THREE.Mesh(geom, material)
+scene.add(cube)
+scene.add(helper)
 
 const sizes = {
     width: 800,
-    height: 600,
+    height: 600
 }
 
+const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
+camera.position.z = 5
 
-/**#
- * Camera
- * @type {THREE.PerspectiveCamera}
- * @description A camera that uses perspective projection.
- * @see {@link https://threejs.org/docs/#api/en/cameras/PerspectiveCamera}
- */
-const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 1000)
-camera.position.z = 6
-
-scene.add(camera)
-
-// camera.lookAt(mesh.position)
 const renderer = new THREE.WebGLRenderer({
     canvas
-})
-
-
-
+    }
+)
 renderer.setSize(sizes.width, sizes.height)
-
 renderer.render(scene, camera)
