@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls';
+import {OrbitControls} from 'three/addons/controls/OrbitControls';
 
 const sizes = {
     width: window.innerWidth,
@@ -7,14 +7,13 @@ const sizes = {
 }
 
 
-
 const canvas = document.getElementById('canvas-webgl') as HTMLCanvasElement;
 
 const scene = new THREE.Scene();
 
 const geom = new THREE.Mesh(
-    new THREE.BoxGeometry(1,1,1,10,10,10),
-    new THREE.MeshBasicMaterial({color: 0xff00ff, wireframe: true  })
+    new THREE.BoxGeometry(1, 1, 1, 10, 10, 10),
+    new THREE.MeshBasicMaterial({color: 0xff00ff, wireframe: true})
 );
 
 scene.add(geom);
@@ -32,7 +31,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 
 
-const clock = new THREE.Clock();
+// const clock = new THREE.Clock();
 
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
@@ -43,20 +42,54 @@ controls.enableKeys = true
 
 
 window.addEventListener('resize', () => {
+    // update sizes
     sizes.width = window.innerWidth;
     sizes.height = window.innerHeight;
 
+    // update camera aspect ratio
     camera.aspect = sizes.width / sizes.height;
     camera.updateProjectionMatrix();
+
+    // update renderer
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+})
+
+window.addEventListener('dblclick', async () => {
+
+    // safari supposrts full screen, but cater for older browsers
+
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement|| document.mozFullscreenElement || document.msFullscreenElement;
+
+    if (!fullscreenElement) {
+        if (canvas.requestFullscreen) {
+            await canvas.requestFullscreen().catch((err) => {
+                alert(
+                    `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`,
+                );
+            });
+        } else if (canvas.webkitRequestFullscreen) {
+            console.log('hi')
+            await canvas.webkitRequestFullscreen().catch((err) => {
+                alert(
+                    `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`,
+                );
+            });
+        }
+
+    } else {
+        if (document.exitFullscreen) {
+            await document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            await document.webkitExitFullscreen()
+        }
+    }
 
 })
 
 function tick() {
 
-    const elapsedTime = clock.getElapsedTime();
-    console.log(elapsedTime)
+    // const elapsedTime = clock.getElapsedTime();
     controls.update();
     camera.set
 
@@ -64,4 +97,5 @@ function tick() {
 
     window.requestAnimationFrame(tick);
 }
+
 tick()

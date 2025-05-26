@@ -45,3 +45,40 @@ It's nice to add this to the resize event, as use might move from one screen to 
 
 ## Handling fullscreen
 
+Iphone does not support, but ipads support it with prefix webkit options. 
+
+<code>
+
+window.addEventListener('dblclick', async (event) => {
+
+    // safari supposrts full screen, but cater for older browsers and Ipads
+
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement|| document.mozFullscreenElement || document.msFullscreenElement;
+
+    if (!fullscreenElement) {
+        if (canvas.requestFullscreen) {
+            await canvas.requestFullscreen().catch((err) => {
+                alert(
+                    `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`,
+                );
+            });
+        } else if (canvas.webkitRequestFullscreen) {
+            console.log('hi')
+            await canvas.webkitRequestFullscreen().catch((err) => {
+                alert(
+                    `Error attempting to enable fullscreen mode: ${err.message} (${err.name})`,
+                );
+            });
+        }
+
+    } else {
+        if (document.exitFullscreen) {
+            await document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            await document.webkitExitFullscreen()
+        }
+    }
+
+})
+
+</code>

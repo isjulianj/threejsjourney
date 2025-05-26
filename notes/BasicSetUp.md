@@ -20,3 +20,5 @@ Object is made of geom, and a material added to a mesh
 9. Now we create a renderer and give it the canvas, WebGLRenderer({canvas})
 10. Set the size of the renderer renderer.setSize(width, height)
 11. Then add the scene and the camera in this order:  renderer.render(scene, camera)
+12. Set a resize listener, remember to update aspect ratio on camera ( camera.updateProjectionMatrix()) and renderer size
+    1. also it's goot to set renderer pixel ratio, just in case user has screens with different types (  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));_)
