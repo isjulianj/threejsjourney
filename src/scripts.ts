@@ -8,23 +8,35 @@ const axisHelper = new THREE.AxesHelper(3)
 // Scene
 const scene = new THREE.Scene()
 
+/**
+ * Objects
+ */
+const group = new THREE.Group();
+scene.add(group)
 
-// Geometry
-const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: 0xffff00, opacity: 0.5 })
-const mesh = new THREE.Mesh(geometry, material)
+const cube1 = new THREE.Mesh(new THREE.BoxGeometry(1,1,1),
+    new THREE.MeshBasicMaterial({color: 0xffffff}));
 
-mesh.position.set(0.7, -0.6, 0.5)
+group.position.set(0,2,0);
 
-scene.add(mesh)
+group.add(cube1)
+
+const cube2 = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial({color: 0xffff00}));
+cube2.position.x = -2
+group.add(cube2)
+
+const cube3 = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial({color: 0xff0000}));
+cube3.position.x = 2
+group.add(cube3)
+
 scene.add(axisHelper)
 
-mesh.scale.set(2, 0.5, 1)
+// mesh.scale.set(2, 0.5, 1)
 
 // rotation
-mesh.rotation.reorder('YXZ')
-mesh.rotation.x = Math.PI * 0.25
-mesh.rotation.y = Math.PI * 0.25
+// mesh.rotation.reorder('YXZ')
+// mesh.rotation.x = Math.PI * 0.25
+// mesh.rotation.y = Math.PI * 0.25
 
 const sizes = {
     width: 800,
@@ -43,7 +55,7 @@ camera.position.z = 6
 
 scene.add(camera)
 
-camera.lookAt(mesh.position)
+// camera.lookAt(mesh.position)
 const renderer = new THREE.WebGLRenderer({
     canvas
 })
