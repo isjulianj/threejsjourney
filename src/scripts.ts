@@ -91,7 +91,6 @@ function tick() {
 
     // const elapsedTime = clock.getElapsedTime();
     controls.update();
-    camera.set
 
     renderer.render(scene, camera);
 
