@@ -1,37 +1,52 @@
-import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls';
+import * as THREE from "three";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+
+
 
 const sizes = {
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
 }
 
+const canvas = document.getElementById("canvas-webgl");
+const axisHelper = new THREE.AxesHelper()
 
-const canvas = document.getElementById('canvas-webgl') as HTMLCanvasElement;
-
+// scene
 const scene = new THREE.Scene();
+scene.add(axisHelper);
+
+
+const geometry = new THREE.BufferGeometry()
+
+const count = 5;
+const positions = new Float32Array(count * 3 * 3)
+
+for (let i = 0 ; i < count * 3 * 3; i++) {
+    positions[i] = (Math.random() - 0.5) * 4
+}
+
+const positionsAttribute = new THREE.BufferAttribute(positions, 3)
+
+geometry.setAttribute('position', positionsAttribute)
 
 const geom = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1, 10, 10, 10),
-    new THREE.MeshBasicMaterial({color: 0xff00ff, wireframe: true})
-);
+    geometry,
+    new THREE.MeshBasicMaterial({color: 0xffe333, wireframe: true}),
+)
 
-scene.add(geom);
+scene.add(geom)
 
-
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 1, 100)
+camera.position.z = 3;
 scene.add(camera);
 
-camera.position.z = 3;
-
 const renderer = new THREE.WebGLRenderer({
-    canvas
+    canvas,
 })
+renderer.setSize(sizes.width, sizes.height)
 
-renderer.setSize(sizes.width, sizes.height);
 
-
-// const clock = new THREE.Clock();
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
@@ -42,24 +57,19 @@ controls.enableKeys = true
 
 
 window.addEventListener('resize', () => {
-    // update sizes
-    sizes.width = window.innerWidth;
-    sizes.height = window.innerHeight;
-
-    // update camera aspect ratio
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
     camera.aspect = sizes.width / sizes.height;
-    camera.updateProjectionMatrix();
-
-    // update renderer
-    renderer.setSize(sizes.width, sizes.height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    camera.updateProjectionMatrix()
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.render(scene, camera);
 })
 
 window.addEventListener('dblclick', async () => {
-
-    // safari supposrts full screen, but cater for older browsers
-
-    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement|| document.mozFullscreenElement || document.msFullscreenElement;
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullscreenElement || document.msFullscreenElement;
+    if (!canvas) {
+        throw new Error('Can\'t find canvas element');
+    }
 
     if (!fullscreenElement) {
         if (canvas.requestFullscreen) {
@@ -87,14 +97,10 @@ window.addEventListener('dblclick', async () => {
 
 })
 
+
 function tick() {
-
-    // const elapsedTime = clock.getElapsedTime();
-    controls.update();
-
     renderer.render(scene, camera);
-
-    window.requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
 }
 
 tick()
