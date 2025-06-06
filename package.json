@@ -20,6 +20,7 @@
   "homepage": "https://github.com/isjulianj/threejsjourney#readme",
   "dependencies": {
     "gsap": "^3.13.0",
+    "lil-gui": "^0.20.0",
     "react": "^19.1.0",
     "three": "^0.176.0",
     "typescript": "^5.8.3"

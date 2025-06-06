@@ -1,6 +1,19 @@
 import * as THREE from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls"
+import GUI from 'lil-gui'
+import gsap from "gsap"
 
+const gui = new GUI({
+    title: 'My WebGL Scene',
+})
+const debugObject = {
+    active: true,
+    boxColor: '#756ba8',
+    boxPositionY: 0,
+    spinGeometry: function() {
+        gsap.to(box.rotation, { y: box.rotation.y + Math.PI * 2, duration: 1 });
+    }
+}
 
 
 const sizes = {
@@ -15,26 +28,27 @@ const axisHelper = new THREE.AxesHelper()
 const scene = new THREE.Scene();
 scene.add(axisHelper);
 
+const box = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1, 2, 2, 2),
+    new THREE.MeshBasicMaterial({color: debugObject.boxColor, wireframe: true}),
+);
 
-const geometry = new THREE.BufferGeometry()
+scene.add(box)
 
-const count = 5;
-const positions = new Float32Array(count * 3 * 3)
+gui.add(
+    box.position,
+    'y'
+).min(-3)
+    .max(3)
+    .step(0.01)
+    .name('Box Y Position');
 
-for (let i = 0 ; i < count * 3 * 3; i++) {
-    positions[i] = (Math.random() - 0.5) * 4
-}
 
-const positionsAttribute = new THREE.BufferAttribute(positions, 3)
+gui.add(box.material, 'wireframe')
+gui.addColor(debugObject, 'boxColor')
+    .onChange((value) => box.material.color.set(value));
 
-geometry.setAttribute('position', positionsAttribute)
-
-const geom = new THREE.Mesh(
-    geometry,
-    new THREE.MeshBasicMaterial({color: 0xffe333, wireframe: true}),
-)
-
-scene.add(geom)
+gui.add(debugObject, 'spinGeometry')
 
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 1, 100)
 camera.position.z = 3;
