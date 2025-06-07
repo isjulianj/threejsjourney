@@ -6,13 +6,15 @@ import gsap from "gsap"
 const gui = new GUI({
     title: 'My WebGL Scene',
 })
+gui.hide()
 const debugObject = {
     active: true,
     boxColor: '#756ba8',
     boxPositionY: 0,
-    spinGeometry: function() {
-        gsap.to(box.rotation, { y: box.rotation.y + Math.PI * 2, duration: 1 });
-    }
+    spinGeometry: function () {
+        gsap.to(box.rotation, {y: box.rotation.y + Math.PI * 2, duration: 1});
+    },
+    subDivision: 2
 }
 
 
@@ -35,7 +37,9 @@ const box = new THREE.Mesh(
 
 scene.add(box)
 
-gui.add(
+const boxDebug = gui.addFolder('Box')
+
+boxDebug.add(
     box.position,
     'y'
 ).min(-3)
@@ -44,11 +48,23 @@ gui.add(
     .name('Box Y Position');
 
 
-gui.add(box.material, 'wireframe')
-gui.addColor(debugObject, 'boxColor')
+boxDebug.add(box.material, 'wireframe')
+boxDebug.addColor(debugObject, 'boxColor')
     .onChange((value) => box.material.color.set(value));
 
-gui.add(debugObject, 'spinGeometry')
+boxDebug.add(debugObject, 'spinGeometry').name('Spin');
+
+boxDebug.add(debugObject, 'subDivision')
+    .min(1)
+    .max(20)
+    .step(1)
+    .onFinishChange(() => {
+        box.geometry.dispose()
+        box.geometry = new THREE.BoxGeometry(
+            1, 1, 1,
+            debugObject.subDivision, debugObject.subDivision, debugObject.subDivision,
+        );
+    })
 
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 1, 100)
 camera.position.z = 3;
@@ -107,6 +123,14 @@ window.addEventListener('dblclick', async () => {
         } else if (document.webkitExitFullscreen) {
             await document.webkitExitFullscreen()
         }
+    }
+
+})
+
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'h') {
+        console.log(gui._hidden)
+        gui.show(gui._hidden)
     }
 
 })
